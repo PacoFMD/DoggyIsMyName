@@ -9,6 +9,7 @@ public class CharacterController : MonoBehaviour
     public Image image;
     public float speed;
     public GameObject panel, doggyPanel, doggyLovePanel, aux, person_aux;
+    int auxTrash_id;
     public Sprite defaultSprite;
     public Image doggyLove;
     public bool haveOwner = false, touchPerson = false, touchTrash = false;
@@ -53,33 +54,48 @@ public class CharacterController : MonoBehaviour
 
             if (Input.GetKeyDown("q"))
             {
-                doggyLove.fillAmount += trashcount / 10f;
-                trashcount = 0;
+
+                if (person_aux.GetComponent<PersonController>().GetId() != auxTrash_id)
+                {
+                    doggyLove.fillAmount = 0.02f;
+                    person_aux.GetComponent<Animator>().SetTrigger("IsAngry");
+                }
+                else
+                {
+                    doggyLove.fillAmount += trashcount / 10f;
+                    trashcount = 0;
+                    doggyPanel.SetActive(false);
+                }
+
+                
             }
         }
 
         if(touchTrash && haveOwner)
         {
-            if (Input.GetKeyDown("r"))
+            if (Input.GetKeyDown("r") && trashcount == 0)
             {
-
+                auxTrash_id = aux.GetComponent<Item>().GetId();
                 Destroy(aux);
                 trashcount++;
                 doggyPanel.SetActive(false);
                 touchTrash = false;
+
             }
         }
        
         if(haveOwner && doggyLove.fillAmount <= 0.9)
         {
             doggyLove.fillAmount -= Time.deltaTime / 100f;
-            if(doggyLove.fillAmount <= 0)
+            if(doggyLove.fillAmount <= 0.05) // condición para que pierda y sus consecuencias
             {
                 haveOwner = false;
                 doggyLove.fillAmount = 0.2f;
                 doggyLovePanel.SetActive(false);
                 texto.text = "____";
                 image.GetComponent<Image>().sprite = defaultSprite;
+                person_aux.GetComponent<PersonController>().ChangeState();
+                trashcount = 0;
             }
         }
         else if(haveOwner && doggyLove.fillAmount >= 0.9    )
@@ -111,28 +127,30 @@ public class CharacterController : MonoBehaviour
 
         if (collision.gameObject.tag == "Owner")
         {
-            touchPerson = true;
-            if (!haveOwner)
+            if (collision.gameObject.GetComponent<PersonController>().DogBool())
             {
-                texto.text = collision.gameObject.GetComponent<PersonController>().GetName();
-                image.GetComponent<Image>().sprite = collision.gameObject.GetComponent<PersonController>().image;
-                collision.gameObject.GetComponent<Animator>().SetBool("DogWithMe", true);
-                person_aux = collision.gameObject;
-                panel.SetActive(true);
-            }
-            if (collision.gameObject.GetComponent<PersonController>().IamOwner)
-            {
-                if(trashcount > 0)
+                touchPerson = true;
+                if (!haveOwner)
                 {
-                    doggyPanel.SetActive(true);
-                    doggyPanel.transform.GetChild(0).GetComponent<Text>().text = "Presiona q para entregar";
+                    texto.text = collision.gameObject.GetComponent<PersonController>().GetName();
+                    image.GetComponent<Image>().sprite = collision.gameObject.GetComponent<PersonController>().image;
+                    collision.gameObject.GetComponent<Animator>().SetBool("DogWithMe", true);
+                    person_aux = collision.gameObject;
+                    panel.SetActive(true);
                 }
-                
-                collision.gameObject.GetComponent<Animator>().SetBool("DogWithMe", true);
-            }
-        }
+                if (collision.gameObject.GetComponent<PersonController>().IamOwner)
+                {
+                    if (trashcount > 0)
+                    {
+                        doggyPanel.SetActive(true);
+                        doggyPanel.transform.GetChild(0).GetComponent<Text>().text = "Presiona q para entregar";
+                    }
 
-       
+                    collision.gameObject.GetComponent<Animator>().SetBool("DogWithMe", true);
+                }
+            }
+           
+        }       
     }
 
     public void OnCollisionExit(Collision collision)
@@ -146,9 +164,9 @@ public class CharacterController : MonoBehaviour
                     doggyPanel.SetActive(false);
                    
             }
-                touchPerson = false;
-           
+            touchPerson = false;           
             collision.gameObject.GetComponent<Animator>().SetBool("DogWithMe", false);
+            panel.SetActive(false);
         }
        
     }
