@@ -10,44 +10,62 @@ public class PersonController : MonoBehaviour
     public Sprite image;
     public int MyItemId;
     public bool IamOwner = false;
-    float counter = 0, maxRange;
-    public float CounterForADog = 0, maxWaitTime;
+    float counter = 0, maxRange, CounterForADog = 0, maxWaitTime, counterAngry = 0, counterAngryMaxTime;
+    GameObject player;
     [SerializeField]
     bool CanIHaveADog = true;
+    public bool isAngry = false;
    
     
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("Player");
         maxRange = Random.Range(10, 25);
         maxWaitTime = Random.Range(1, 10);
+        counterAngryMaxTime = Random.Range(15, 25);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (IamOwner)
+        if (!isAngry)
         {
-            counter += Time.deltaTime;
-            if(counter >= maxRange)
+            if (IamOwner)
             {
-                this.gameObject.GetComponent<Animator>().SetTrigger("WhereIsDog");
-                counter = 0;
-                maxRange = Random.Range(10, 25);
+                counter += Time.deltaTime;
+                if (counter >= maxRange)
+                {
+                    this.gameObject.GetComponent<Animator>().SetTrigger("WhereIsDog");
+                    counter = 0;
+                    maxRange = Random.Range(10, 25);
+                }
+            }
+
+
+            if (!CanIHaveADog)
+            {
+                CounterForADog += Time.deltaTime;
+                if (CounterForADog >= maxWaitTime)
+                {
+
+                    CounterForADog = 0;
+                    maxWaitTime = Random.Range(10, 30);
+                    CanIHaveADog = true;
+                }
             }
         }
-
-
-        if (!CanIHaveADog)
+        else
         {
-            CounterForADog += Time.deltaTime;
-            if (CounterForADog >= maxWaitTime)
+            counterAngry += Time.deltaTime;
+            if (counterAngry >= counterAngryMaxTime)
             {
 
-                CounterForADog = 0;
-                maxWaitTime = Random.Range(10, 30);
-                CanIHaveADog = true;
+                counterAngry = 0;
+                counterAngryMaxTime = Random.Range(15, 25);
+                isAngry = false;
             }
         }
+        
     }
 
     public string GetName()
@@ -72,4 +90,9 @@ public class PersonController : MonoBehaviour
         return MyItemId;
     }
   
+
+    public void SetActiveCollisionPlayer()
+    {
+       
+    }
 }

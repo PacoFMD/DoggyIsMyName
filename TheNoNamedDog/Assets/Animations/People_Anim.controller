@@ -144,31 +144,31 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsDogNear
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: DogWithMe
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IHaveADog
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsAngry
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -268,11 +268,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 1.0670555
-  m_TransitionOffset: 0
-  m_ExitTime: 0.16638882
-  m_HasExitTime: 1
-  m_HasFixedDuration: 1
+  m_TransitionDuration: 0.7354007
+  m_TransitionOffset: 0.035116397
+  m_ExitTime: 0.16638884
+  m_HasExitTime: 0
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
@@ -287,19 +287,19 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1993678235143290459}
-    m_Position: {x: 40, y: 250, z: 0}
+    m_Position: {x: 80, y: 300, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6084714224609391582}
-    m_Position: {x: 380, y: 260, z: 0}
+    m_Position: {x: 420, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2527202471282915458}
-    m_Position: {x: 406, y: 92, z: 0}
+    m_Position: {x: 440, y: 140, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2897645525842121570}
-    m_Position: {x: 440, y: 10, z: 0}
+    m_Position: {x: 440, y: 20, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6265750405966404294}
-    m_Position: {x: -260, y: 70, z: 0}
+    m_Position: {x: -220, y: 120, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 4273831595982896205}
@@ -308,8 +308,8 @@ AnimatorStateMachine:
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_AnyStatePosition: {x: 90, y: 70, z: 0}
+  m_EntryPosition: {x: 90, y: 170, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -1993678235143290459}
@@ -347,7 +347,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Kicking
+  m_Name: Punch
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -361,7 +361,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 51f547f296149414aac0487cc26ead68, type: 2}
+  m_Motion: {fileID: 7400000, guid: 1d51f720ec04a8b4c83f807253a36c70, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -384,11 +384,11 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 4.356818
   m_TransitionOffset: 0
-  m_ExitTime: 0.982353
-  m_HasExitTime: 0
-  m_HasFixedDuration: 1
+  m_ExitTime: 0
+  m_HasExitTime: 1
+  m_HasFixedDuration: 0
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
