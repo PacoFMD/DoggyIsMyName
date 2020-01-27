@@ -2,31 +2,72 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class CharacterController : MonoBehaviour
 {
 
     public Text texto;
     public Image image;
-    public float speed;
+    public float walkSpeed = 2, runSpeed = 6, turnSmoothTime = 0.2f, speedSmoothTime = 0.1f, decreaseForUnFillAmount = 100f;
+    float turnSmoothVelocity, speeSmoothVelocty, currentSpeed;
     public GameObject panel, doggyPanel, doggyLovePanel, aux, person_aux;
     int auxTrash_id;
     public Sprite defaultSprite;
     public Image doggyLove;
-    public bool haveOwner = false, touchPerson = false, touchTrash = false;
+    public bool haveOwner = false, touchPerson = false, touchTrash = false, actionAnim = false, lockCursor = true;
 
+    public Transform cameraT, inNose;
     public int trashcount = 0;
 
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
-        texto.text = "______";
+        if(SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            texto.text = "Luis Miguel";
+        }
+        else
+        {
+            texto.text = "";
+        }
         
+           
+        
+        
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+        }
+                       
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerMovement();
+        if (!actionAnim)
+        {
+            PlayerMovement();
+        }
+        
+        
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            actionAnim = true;
+            currentSpeed = 0;
+            anim.SetTrigger("Bark");
+        }
+
+      /*  if (Input.GetKeyDown(KeyCode.E))
+        {
+            actionAnim = true;
+            currentSpeed = 0;
+            anim.SetTrigger("Duck");
+        }*/
+
 
         if (touchPerson && !haveOwner && !person_aux.GetComponent<PersonController>().isAngry)
         {
@@ -54,7 +95,7 @@ public class CharacterController : MonoBehaviour
 
             if (Input.GetKeyDown("q"))
             {
-
+                Destroy(aux);
                 if (person_aux.GetComponent<PersonController>().GetId() != auxTrash_id)
                 {
                     NobodyLovesYou();
@@ -78,8 +119,12 @@ public class CharacterController : MonoBehaviour
         {
             if (Input.GetKeyDown("r") && trashcount == 0)
             {
+                actionAnim = true;
+                currentSpeed = 0;
+                anim.SetTrigger("Duck");
                 auxTrash_id = aux.GetComponent<Item>().GetId();
-                Destroy(aux);
+                
+                //Destroy(aux);
                 trashcount++;
                 doggyPanel.SetActive(false);
                 touchTrash = false;
@@ -89,7 +134,7 @@ public class CharacterController : MonoBehaviour
        
         if(haveOwner && doggyLove.fillAmount <= 0.9)
         {
-            doggyLove.fillAmount -= Time.deltaTime / 100f;
+            doggyLove.fillAmount -= Time.deltaTime / decreaseForUnFillAmount;
             if(doggyLove.fillAmount <= 0.05) // condición para que pierda y sus consecuencias
             {
 
@@ -202,13 +247,37 @@ public class CharacterController : MonoBehaviour
 
     void PlayerMovement()
     {
-        float _horizontal = Input.GetAxis("Horizontal");
-        float _vertical = Input.GetAxis("Vertical");
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 inputDir = input.normalized;
 
-        Vector3 playermov = new Vector3(_horizontal, 0f, _vertical)*speed*Time.deltaTime;
-        transform.Translate(playermov, Space.Self);
+        if(inputDir != Vector2.zero)
+        {
+            float targetRotation = Mathf.Atan2(inputDir.x, inputDir.y) * Mathf.Rad2Deg + cameraT.eulerAngles.y;
+            transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(transform.eulerAngles.y, targetRotation, ref turnSmoothVelocity, turnSmoothTime);
+            
+             
+            
+
+        }
+        bool IsRunning = Input.GetKey(KeyCode.LeftShift);
+        float targetSpeed = ((IsRunning) ? runSpeed : walkSpeed) * inputDir.magnitude;
+        currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speeSmoothVelocty, speedSmoothTime);
+
+        transform.Translate(transform.forward * currentSpeed * Time.deltaTime, Space.World);
+        anim.SetFloat("Walk", currentSpeed);
+        float animtionSpeedPerc = ((IsRunning) ? 1 : .5f) * inputDir.magnitude;
+        if(IsRunning)
+        {
+            anim.SetFloat("Walk", currentSpeed);
+        }
+        
     }
    
+    public void SetParentAuxToNose()
+    {
+        aux.transform.position = inNose.position;
+        aux.transform.SetParent(inNose);
+    }
 
     void NobodyLovesYou()
     {

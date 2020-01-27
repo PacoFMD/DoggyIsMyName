@@ -639,7 +639,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -2477152504647978758, guid: 6fcba83e6265b3e4ba5c932081cec942, type: 3}
+  - {fileID: 2100000, guid: 35aa3933c99d2024eb834fac06c8c531, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -995,6 +995,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   image: {fileID: 0}
+  MyItemId: 0
+  IamOwner: 0
+  CanIHaveADog: 1
+  isAngry: 0
 --- !u!1 &4533375349028353945
 GameObject:
   m_ObjectHideFlags: 0
@@ -1518,7 +1522,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2541457280464432744, guid: 6fcba83e6265b3e4ba5c932081cec942, type: 3}
+  - {fileID: 2100000, guid: 35aa3933c99d2024eb834fac06c8c531, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

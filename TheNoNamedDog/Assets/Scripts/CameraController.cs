@@ -4,48 +4,42 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float rotationSpeed = 1;
-    public Transform target, player;
-    float mouseX, mouseY;
-    // Start is called before the first frame update
-    void Start()
+    float mouseSensitivity = 5f;
+    public Transform target;
+    public float dstFromTarget = 2f, rotationSmoothTime = 1.2f;
+    Vector2 pitchMinMax = new Vector2(-40, 85);
+    Vector3 rotationSmoothVelocity, currrentRotation;
+
+    bool lockCursor;
+
+    float yawn, pitch;
+
+    private void Start()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
     }
 
     private void LateUpdate()
     {
-        CameraControl();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        CameraCon();
     }
 
 
-    void CameraControl()
+
+    void CameraCon()
     {
-        mouseX += Input.GetAxis("Mouse X") * rotationSpeed;
-        mouseY -= Input.GetAxis("Mouse Y") * rotationSpeed;
-        mouseY = Mathf.Clamp(mouseY, -35, 60);
+        yawn += Input.GetAxis("Mouse X") * mouseSensitivity;
+        pitch += Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        transform.LookAt(target);
+        pitch = Mathf.Clamp(pitch, pitchMinMax.x, pitchMinMax.y);
 
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            target.rotation = Quaternion.Euler(mouseY, mouseY, 0);
-        }
-        else
-        {
-            target.rotation = Quaternion.Euler(mouseY, mouseX, 0);
-            player.rotation = Quaternion.Euler(0, mouseX, 0);
-        }
+        currrentRotation = Vector3.SmoothDamp(currrentRotation, new Vector3(pitch, yawn), ref rotationSmoothVelocity, rotationSmoothTime);
+        transform.eulerAngles = currrentRotation;
 
-        
-
-
+        transform.position = target.position - transform.forward * dstFromTarget;
     }
 }
