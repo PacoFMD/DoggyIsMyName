@@ -10,11 +10,11 @@ public class CharacterController : MonoBehaviour
     public Image image;
     public float walkSpeed = 2, runSpeed = 6, turnSmoothTime = 0.2f, speedSmoothTime = 0.1f, decreaseForUnFillAmount = 100f;
     float turnSmoothVelocity, speeSmoothVelocty, currentSpeed;
-    public GameObject panel, doggyPanel, doggyLovePanel, aux, person_aux;
+    public GameObject panel, doggyPanel, doggyLovePanel, aux, person_aux, pauseCanvas;
     int auxTrash_id;
     public Sprite defaultSprite;
     public Image doggyLove;
-    public bool haveOwner = false, touchPerson = false, touchTrash = false, actionAnim = false, lockCursor = true;
+    public bool haveOwner = false, touchPerson = false, touchTrash = false, actionAnim = false, lockCursor = true, objEntregado = false, isPause = false, win = false, setTrigger = false;
 
     public Transform cameraT, inNose;
     public int trashcount = 0;
@@ -23,6 +23,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
         if(SceneManager.GetActiveScene().name == "Tutorial")
         {
             texto.text = "Luis Miguel";
@@ -51,8 +52,32 @@ public class CharacterController : MonoBehaviour
         {
             PlayerMovement();
         }
-        
-        
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            isPause = !isPause;
+            if (isPause)
+            {
+                
+                pauseCanvas.transform.GetChild(0).GetComponent<Animator>().SetBool("IsInPause", true);
+                actionAnim = true;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+               
+            }
+            else
+            {
+                pauseCanvas.transform.GetChild(0).GetComponent<Animator>().SetBool("IsInPause", false);
+                ActivateFromPause();
+                
+            }
+        }
+
+       /* if (Input.GetKeyDown(KeyCode.I))
+        {
+            // anim.SetBool("Sit", true);
+           
+        }*/
 
         if (Input.GetMouseButtonDown(1))
         {
@@ -106,18 +131,19 @@ public class CharacterController : MonoBehaviour
                 }
                 else
                 {
-                    doggyLove.fillAmount += trashcount / 10f;
+                    doggyLove.fillAmount += (trashcount*2) / 10f;
                     trashcount = 0;
                     doggyPanel.SetActive(false);
                 }
 
+                objEntregado = true;
                 
             }
         }
 
         if(touchTrash && haveOwner)
         {
-            if (Input.GetKeyDown("r") && trashcount == 0)
+            if (Input.GetKeyDown("e") && trashcount == 0)
             {
                 actionAnim = true;
                 currentSpeed = 0;
@@ -131,20 +157,31 @@ public class CharacterController : MonoBehaviour
 
             }
         }
-       
-        if(haveOwner && doggyLove.fillAmount <= 0.9)
+
+        if (haveOwner && doggyLove.fillAmount <= 0.9)
         {
             doggyLove.fillAmount -= Time.deltaTime / decreaseForUnFillAmount;
-            if(doggyLove.fillAmount <= 0.05) // condición para que pierda y sus consecuencias
+            if (doggyLove.fillAmount <= 0.05) // condición para que pierda y sus consecuencias
             {
 
                 NobodyLovesYou();
-               
+
             }
         }
-        else if(haveOwner && doggyLove.fillAmount >= 0.9    )
+        else if (haveOwner && doggyLove.fillAmount >= 0.9)
         {
+            win = true;
             person_aux.GetComponent<Animator>().SetTrigger("IHaveADog");
+            //anim.SetBool("Sit", true);
+            if(!setTrigger)
+            {
+                anim.SetTrigger("SitOnTrigger");
+                setTrigger = true;
+            }
+
+            actionAnim = true;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         //if (Input.GetKey(KeyCode.A))
@@ -227,7 +264,7 @@ public class CharacterController : MonoBehaviour
     {
         if (other.gameObject.tag == "Trash" && haveOwner && trashcount == 0)
         {
-            doggyPanel.transform.GetChild(0).GetComponent<Text>().text = "Presiona r para recolectar";
+            doggyPanel.transform.GetChild(0).GetComponent<Text>().text = "Presiona e para recolectar";
             
             touchTrash = true;
             aux = other.gameObject;
@@ -282,7 +319,7 @@ public class CharacterController : MonoBehaviour
     void NobodyLovesYou()
     {
         haveOwner = false;
-        doggyLove.fillAmount = 0.2f;
+        doggyLove.fillAmount = 0.4f;
         doggyLovePanel.SetActive(false);
         doggyPanel.SetActive(false);
         touchTrash = false;
@@ -290,5 +327,13 @@ public class CharacterController : MonoBehaviour
         image.GetComponent<Image>().sprite = defaultSprite;
         person_aux.GetComponent<PersonController>().ChangeState();
         trashcount = 0;     
+    }
+
+    public void ActivateFromPause()
+    {
+        actionAnim = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        
     }
 }

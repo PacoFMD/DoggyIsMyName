@@ -64546,8 +64546,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 3.0416667
-    functionName: Change
+  - time: 3
+    functionName: ChangeBark
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

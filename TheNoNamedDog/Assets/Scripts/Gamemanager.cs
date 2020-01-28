@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Gamemanager : MonoBehaviour
 {
-
+   
+    
     string DogName;
+    bool PlayedTutorial = false;
 
     void Awake()
     {
@@ -39,4 +42,16 @@ public class Gamemanager : MonoBehaviour
     {
         DogName = _dogname;
     }
+
+    public bool GetPlayedTutorial()
+    {
+        return PlayedTutorial;
+    }
+
+    public void SetPlayedTutorial()
+    {
+        PlayedTutorial = true;
+    }
+
+
 }

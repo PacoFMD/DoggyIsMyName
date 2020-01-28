@@ -6,18 +6,8 @@ public class Item : MonoBehaviour
 {
     // Start is called before the first frame update
 
-    public int id;
+    public int id;   
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public int GetId()
     {

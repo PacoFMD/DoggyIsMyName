@@ -8,12 +8,24 @@ public class MenuManager : MonoBehaviour
 {
     // Start is called before the first frame update
     public Animator anim, doganim;
-    public GameObject start, creditos, salir, regresar,rungame, CanvasLoadingScreen;
+    public GameObject start, creditos, salir, regresar,rungame, CanvasLoadingScreen,canvasCreditos;
     public InputField inputField;
     Gamemanager gamemanager;
     void Start()
     {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        CanvasLoadingScreen = GameObject.FindGameObjectWithTag("CanvasLoadingScreen");
+        CanvasLoadingScreen.SetActive(false);
         gamemanager = GameObject.FindGameObjectWithTag("Gamemanager").GetComponent<Gamemanager>();
+        if (gamemanager.GetPlayedTutorial())
+        {
+            CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 2;
+        }
+        else
+        {
+            CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 1;
+        }
     }
 
     // Update is called once per frame
@@ -49,7 +61,8 @@ public class MenuManager : MonoBehaviour
 
     public void Creditos()
     {
-        
+        anim.SetBool("StartCredits", true);
+        canvasCreditos.SetActive(true);
     }
     public void SalirEnter()
     {
