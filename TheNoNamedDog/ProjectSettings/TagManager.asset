@@ -9,6 +9,7 @@ TagManager:
   - Gamemanager
   - CanvasLoadingScreen
   - PauseCanvas
+  - LevelFoot
   layers:
   - Default
   - TransparentFX

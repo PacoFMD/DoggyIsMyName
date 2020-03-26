@@ -18,7 +18,7 @@ public class CharacterController : MonoBehaviour
 
     public Transform cameraT, inNose;
     public int trashcount = 0;
-
+    public int player;
     public Animator anim;
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class CharacterController : MonoBehaviour
         }
         else
         {
-            texto.text = "";
+            //texto.text = "";
         }
         
            
@@ -284,7 +284,7 @@ public class CharacterController : MonoBehaviour
 
     void PlayerMovement()
     {
-        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"+player.ToString()), Input.GetAxisRaw("Vertical"+player.ToString()));
         Vector2 inputDir = input.normalized;
 
         if(inputDir != Vector2.zero)

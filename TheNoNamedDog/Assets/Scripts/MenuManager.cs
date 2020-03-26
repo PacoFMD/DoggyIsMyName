@@ -10,7 +10,9 @@ public class MenuManager : MonoBehaviour
     public Animator anim, doganim;
     public GameObject start, creditos, salir, regresar,rungame, CanvasLoadingScreen,canvasCreditos;
     public InputField inputField;
+    public bool isClassicGame = true;
     Gamemanager gamemanager;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -18,14 +20,18 @@ public class MenuManager : MonoBehaviour
         CanvasLoadingScreen = GameObject.FindGameObjectWithTag("CanvasLoadingScreen");
         CanvasLoadingScreen.SetActive(false);
         gamemanager = GameObject.FindGameObjectWithTag("Gamemanager").GetComponent<Gamemanager>();
-        if (gamemanager.GetPlayedTutorial())
+        if (isClassicGame)
         {
-            CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 2;
+            if (gamemanager.GetPlayedTutorial())
+            {
+                CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 2;
+            }
+            else
+            {
+                CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 1;
+            }
         }
-        else
-        {
-            CanvasLoadingScreen.transform.GetChild(1).GetComponent<StarLevel>().loadLevel = 1;
-        }
+        
     }
 
     // Update is called once per frame
@@ -107,7 +113,7 @@ public class MenuManager : MonoBehaviour
 
     public void RunGame()
     {
-        gamemanager.SetDogName(inputField.text);
+        //gamemanager.SetDogName(inputField.text);
         CanvasLoadingScreen.SetActive(true);
         
     }

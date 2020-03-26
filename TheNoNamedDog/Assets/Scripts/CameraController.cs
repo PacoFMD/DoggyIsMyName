@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public float dstFromTarget = 2f, rotationSmoothTime = 1.2f;
     Vector2 pitchMinMax = new Vector2(-40, 85);
     Vector3 rotationSmoothVelocity, currrentRotation;
+    
 
     bool lockCursor;
 
