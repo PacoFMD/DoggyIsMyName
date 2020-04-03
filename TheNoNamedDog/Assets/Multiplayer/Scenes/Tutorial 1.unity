@@ -2066,6 +2066,16 @@ PrefabInstance:
       propertyPath: player
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6013812505568405238, guid: 8ddee7f573dbf9f468959c1af0e17519,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6013812505568405238, guid: 8ddee7f573dbf9f468959c1af0e17519,
+        type: 3}
+      propertyPath: runSpeed
+      value: 12
+      objectReference: {fileID: 0}
     - target: {fileID: 6013812505083066499, guid: 8ddee7f573dbf9f468959c1af0e17519,
         type: 3}
       propertyPath: m_Camera
@@ -4447,6 +4457,16 @@ PrefabInstance:
         type: 3}
       propertyPath: player
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6013812505568405238, guid: 8ddee7f573dbf9f468959c1af0e17519,
+        type: 3}
+      propertyPath: runSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6013812505568405238, guid: 8ddee7f573dbf9f468959c1af0e17519,
+        type: 3}
+      propertyPath: walkSpeed
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6013812505083066499, guid: 8ddee7f573dbf9f468959c1af0e17519,
         type: 3}
